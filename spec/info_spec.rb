@@ -13,7 +13,7 @@ describe Legendary::Info do
   subject { described_class.new(spec, dependencies, definitions) }
 
   context do
-    specify { expect(subject.git_outdated).to be_falsey }
+    specify { expect(subject.git_outdated?).to be_falsey }
   end
 
   context do

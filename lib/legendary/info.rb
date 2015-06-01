@@ -31,8 +31,8 @@ module Legendary
     def vulnerable?
       # FIXME: speeds things up, but in theory a
       # a gem might not have a release, but have vulnerable
-      return false unless (outdated? || git_outdated?)
-      return vulnerabilities.any?
+      # return false unless (outdated? || git_outdated?)
+      vulnerabilities.any?
     end
 
     def vulnerabilities

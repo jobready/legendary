@@ -4,8 +4,8 @@ module Legendary
 
     attr_accessor :path
 
-    def initialize(path)
-      @path = path
+    def initialize(path=nil)
+      @path = path || '/tmp/.legendary-repo'
     end
 
     def repo_exists?

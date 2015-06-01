@@ -8,7 +8,7 @@ module Legendary
 
     def path
       @path ||= File.join(Legendary.repository.path,
-                          @info.name)
+                          "/gems/#{@info.name}")
     end
 
     def exists?
@@ -18,26 +18,22 @@ module Legendary
     def each
       return nil unless exists?
 
-      Legendary.logger.info("#{@info.name} : #{path}")
-
       Dir.foreach(path) do |yaml_file|
-        info = YAML.load(yaml_file)
+        next if yaml_file =~ /\A\./
 
-        Legendary.logger.info("#{@info.name}: #{info}")
+        info = YAML.load(File.read(File.join(path, yaml_file)))
 
-        affected = (vulnerability.patched_versions || []).none?(satisfied_version)
-        patched = (vulnerability.unaffected_versions || []).none?(satisfied_version)
+        satisfied_version = lambda do |version|
+          Gem::Requirement.new(version.split(',')).satisfied_by?(@info.version)
+        end
+
+        affected = (info["patched_versions"] || []).none?(&satisfied_version)
+        patched = (info["unaffected_versions"] || []).none?(&satisfied_version)
 
         if affected || patched
           yield info
         end
       end
-    end
-
-    private
-
-    def satisfied_version(version)
-      Gem::Requirement.new(version.split(',')).satisfied_by?(@info.version)
     end
   end
 end

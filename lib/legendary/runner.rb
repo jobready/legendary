@@ -1,6 +1,6 @@
 module Legendary
   class Runner
-    def initialize(path='/tmp/.legendary-repo')
+    def initialize(path=nil)
       Legendary.repository = Repository.new(path)
     end
 
@@ -10,15 +10,20 @@ module Legendary
 
       Legendary.logger.info("Loading Gems")
 
+      success = true
+
       Gems.new.each do |gem|
         if gem.outdated?
-          puts "#{gem.name} is outdated. #{gem.version} -> #{gem.latest_version} (it is a #{gem.gemfile ? 'in your gemfile' : 'dependency'})"
+          Legendary.logger.info("#{gem.name} is outdated. #{gem.version} -> #{gem.latest_version} (it is #{gem.gemfile ? 'in your gemfile' : 'a dependency'})")
         end
 
         if gem.vulnerable?
-          puts "#{gem.name} is vulnerable."
+          Legendary.logger.info("#{gem.name} is vulnerable.")
+          success = false
         end
       end
+
+      exit 1 unless success
     end
   end
 end

@@ -30,11 +30,11 @@ RSpec integration (in your spec/spec_helper.rb)
 
 in a spec file
 
-    ```ruby
-    describe Project::Application do
-      specify { is_expected.to be_secure }
-    end
-    ```
+```ruby
+  describe Project::Application do
+    specify { is_expected.to be_secure }
+  end
+```
 
 ## Development
 
