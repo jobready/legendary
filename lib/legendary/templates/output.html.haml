@@ -1,0 +1,48 @@
+!!!
+%html
+  %head
+    %meta{:charset => "utf8"}
+      %title Report
+      %link(href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css' rel='stylesheet' type='text/css')
+  %body
+    .wrapper
+      %h1 Report
+      %p Gems in bold appear in the Gemfile. Other gems appear in Gemfile.lock.
+      %table.table
+        %thead
+          %tr
+            %th Gem Name
+            %th Version
+            %th Latest Version
+            %th Details
+            %th Status
+            %th Links
+        %tbody
+          - sorted_gems.each do |info|
+            - row_class = if info.current?
+              - 'success'
+            - elsif info.outdated?
+              - 'warning'
+            - elsif info.vulnerable?
+              - 'danger'
+            - else
+              - nil
+            %tr{:class => row_class}
+            %td
+              - if info.gemfile
+                %strong= info.name
+              - else
+                = info.name
+            %td= info.version
+            %td= info.latest_version
+            %td= info.vulnerabilities.map(&:to_s) if info.vulnerable?
+            %td
+              - if info.vulnerable?
+                %strong Vulnerable
+              - elsif info.outdated?
+                %strong Out of Date
+              - elsif info.current?
+                Up-to-Date
+              - else
+                Unknown Status
+            %td= info.homepage_uri

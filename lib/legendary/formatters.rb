@@ -1,0 +1,3 @@
+module Legendary::Formatters
+
+end

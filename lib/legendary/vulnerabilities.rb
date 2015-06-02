@@ -27,10 +27,10 @@ module Legendary
           Gem::Requirement.new(version.split(',')).satisfied_by?(@info.version)
         end
 
-        affected = (info["patched_versions"] || []).none?(&satisfied_version)
-        patched = (info["unaffected_versions"] || []).none?(&satisfied_version)
+        is_affected = (info["patched_versions"] || []).none?(&satisfied_version)
+        not_patched = (info["unaffected_versions"] || []).none?(&satisfied_version)
 
-        if affected || patched
+        if is_affected && not_patched
           yield info
         end
       end

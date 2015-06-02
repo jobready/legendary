@@ -2,7 +2,6 @@ module Legendary
   class Info
     attr_accessor :name, :spec, :version, :gemfile, :dependencies, :definitions
 
-    delegate :homepage_uri, to: :meta
     delegate :name, to: :spec
     delegate :version, to: :spec
     delegate :git_version, to: :spec
@@ -24,13 +23,21 @@ module Legendary
       end
     end
 
+    def homepage_uri
+      meta['homepage_uri']
+    end
+
     def outdated?
       Gem::Version.new(latest_version) > Gem::Version.new(version)
     end
 
+    def current?
+      Gem::Version.new(latest_version) == Gem::Version.new(version)
+    end
+
     def vulnerable?
       # FIXME: speeds things up, but in theory a
-      # a gem might not have a release, but have vulnerable
+      # a gem might not have a release, but have vulnerablity
       # return false unless (outdated? || git_outdated?)
       vulnerabilities.any?
     end
