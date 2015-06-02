@@ -1,23 +1,27 @@
 require 'rspec/matchers'
 
-$GEMS = Legendary::Gems.new
+module GemStore
+  def self.gems
+    @gems ||= Legendary::Gems.new.to_a
+  end
+end
 
 RSpec::Matchers.define :be_secure do
   match do |thing|
-    vulnerable_gems = $GEMS.collect do |gem|
-      gem.vulnerable?
-    end
+    vulnerable_gems = GemStore.gems.collect do |gem|
+      gem if gem.vulnerable?
+    end.compact
 
-    expect(vulnerable_gems.empty?).to be_truthy
+    expect(vulnerable_gems.length).to eql(0)
   end
 end
 
 RSpec::Matchers.define :be_updated do
   match do |thing|
-    outdated = $GEMS.collect do |gem|
-      gem.outdated?
-    end
+    outdated = GemStore.gems.collect do |gem|
+      gem if gem.outdated?
+    end.compact
 
-    expect(outdated.empty?).to be_truthy
+    expect(outdated.length).to eql(0)
   end
 end
