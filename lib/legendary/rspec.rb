@@ -2,7 +2,7 @@ require 'rspec/matchers'
 
 module GemStore
   def self.gems
-    @gems ||= Legendary::Gems.new.to_a
+    @gems ||= Legendary::Gems.new(true).to_a
   end
 end
 
