@@ -7,7 +7,7 @@ module Legendary
     delegate :dependencies, to: :bundler
     delegate :specs, to: :bundler
 
-    def initialize
+    def initialize(cached=false)
       @bundler = Bundler.load
     end
 
@@ -22,7 +22,11 @@ module Legendary
     def definitions
       # TODO: locking from gemsurance
       @definitions ||= Bundler.definition(true).tap do |definition|
-        definition.resolve_remotely!
+        if @cached
+          definition.resolve_with_cache!
+        else
+          definition.resolve_remotely!
+        end
       end
     end
   end
