@@ -2,7 +2,11 @@
 
 Ruby Gem Vulnerability Checker.
 
-Started as a fork of [gemsurance](github.com/appfolio/gemsurance).
+Started as a fork of [gemsurance](https://github.com/appfolio/gemsurance)
+
+## Overview
+
+Legendary (Gemsurance) is a tool for monitoring if any of your Ruby Gems are out-of-date or vulnerable. It uses [Bundler](https://github.com/bundler/bundler) and the [Ruby Advisory Database](https://github.com/rubysec/ruby-advisory-db) to do so. It's similar to bundler-audit, but outputs an HTML report and determines which gems are out-of-date as well.
 
 ## Installation
 
